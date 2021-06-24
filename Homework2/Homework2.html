@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+
+ <title>Russo_1664715_Homework2</title>
+
+<!-- Animation Button -->
+ <div>
+   <button type="button" id="animation_button" style="width:300px; height:40px" font-size= "16px";>Start Animation
+   </button>
+ </div>
+
+<script id="vertex-shader" type="x-shader/x-vertex">
+#version 300 es
+
+in vec4 aPosition;
+
+uniform mat4 modelViewMatrix;
+uniform mat4 projectionMatrix;
+
+//Texture coordinated
+in  vec2 vTexCoord;
+out vec2 fTexCoord;
+
+void main()
+{
+    fTexCoord = vTexCoord;
+    gl_Position = projectionMatrix * modelViewMatrix * aPosition;
+}
+</script>
+
+<script id="fragment-shader" type="x-shader/x-fragment">
+#version 300 es
+
+precision mediump float;
+
+out vec4 fColor;
+in vec2 fTexCoord;
+
+uniform sampler2D ubodyTexmap;
+uniform sampler2D uheadTexmap;
+uniform sampler2D uwoodTexmap;
+uniform sampler2D uleavesTexmap;
+
+uniform bool uIsBodyTexture_active;
+uniform bool uIsHeadTexture_active;
+
+uniform bool uIsWoodTexture_active;
+uniform bool uIsLeavesTexture_active;
+
+void main()
+{
+    //Check what texture coords use depending on the flag
+    if (uIsBodyTexture_active)
+      fColor = texture(ubodyTexmap, fTexCoord);
+    else if (uIsHeadTexture_active)
+      fColor = texture(uheadTexmap, fTexCoord);
+    else if (uIsWoodTexture_active)
+      fColor = texture(uwoodTexmap, fTexCoord);
+      else
+        fColor = texture(uleavesTexmap, fTexCoord);
+}
+</script>
+
+<script type="text/javascript" src="../Common/InitShaders.js"></script>
+<script type="text/javascript" src="../Common/MVnew.js"></script>
+<script type="text/javascript" src="Homework2.js"></script>
+
+<img id = "body_tex" src = "fur_bear1.jpg"hidden ></img>
+<img id = "head_tex" src = "head_bear.jpg"hidden ></img>
+<img id = "wood_tex" src = "wood.jpg"hidden ></img>
+<img id = "leaves_tex" src = "leaves.jpg"hidden ></img>
+
+<body style="background-color:#3BE2BF;">
+<canvas id="gl-canvas" width="1280" height="900">
+Oops ... your browser doesn't support the HTML5 canvas element
+</canvas>
+</body>
+</html>
